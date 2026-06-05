@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatika SMP — Modul Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #ff7b72;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-bright: #f0f6fc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 20px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px; right: -100px; bottom: -100px;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(88,166,255,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(212,168,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.12);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--text-bright);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .nav-inner {
+    display: inline-flex;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  nav a {
+    display: inline-block;
+    padding: 14px 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  nav a:hover { color: var(--text-bright); border-color: var(--accent); }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 60px;
+    scroll-margin-top: 70px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-bright);
+  }
+  .section-header .tag {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(88,166,255,0.4); }
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+  .card p { color: var(--text); font-size: 0.93rem; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th {
+    background: var(--surface2);
+    color: var(--text-bright);
+    font-weight: 800;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  td { padding: 11px 16px; color: var(--text); border-top: 1px solid var(--border); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* CODE / MONO */
+  .mono {
+    font-family: 'Space Mono', monospace;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .code-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 3px;
+  }
+  .badge-blue  { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-green { background: rgba(63,185,80,0.15);  color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+  .badge-red   { background: rgba(255,123,114,0.15); color: var(--accent3); border: 1px solid rgba(255,123,114,0.3); }
+  .badge-purple{ background: rgba(212,168,255,0.15); color: var(--accent4); border: 1px solid rgba(212,168,255,0.3); }
+  .badge-orange{ background: rgba(255,166,87,0.15); color: var(--accent5); border: 1px solid rgba(255,166,87,0.3); }
+
+  /* INFO BOX */
+  .info-box {
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    border-left: 3px solid;
+    font-size: 0.9rem;
+  }
+  .info-blue   { background: rgba(88,166,255,0.07);  border-color: var(--accent); }
+  .info-green  { background: rgba(63,185,80,0.07);   border-color: var(--accent2); }
+  .info-red    { background: rgba(255,123,114,0.07); border-color: var(--accent3); }
+  .info-purple { background: rgba(212,168,255,0.07); border-color: var(--accent4); }
+  .info-orange { background: rgba(255,166,87,0.07);  border-color: var(--accent5); }
+  .info-box strong { color: var(--text-bright); }
+
+  /* GERBANG LOGIKA VISUAL */
+  .gate-visual {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .gate-visual svg { width: 100%; max-width: 160px; }
+  .gate-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .gate-desc { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* TRUTH TABLE */
+  .truth-table th { font-size: 13px; }
+  .truth-table td { font-family: 'Space Mono', monospace; font-size: 13px; text-align: center; }
+  .val-1 { color: var(--accent2); font-weight: 700; }
+  .val-0 { color: var(--text-muted); }
+
+  /* IP VISUAL */
+  .ip-box {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .ip-octet {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--text-bright);
+    text-align: center;
+    min-width: 60px;
+  }
+  .ip-dot { color: var(--accent); font-weight: 900; font-size: 1.3rem; }
+  .ip-label { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 4px; }
+
+  /* NETWORK DIAGRAM */
+  .network-diagram {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .network-diagram svg { max-width: 100%; }
+
+  /* PASSWORD METER */
+  .pw-rules { list-style: none; margin-top: 10px; }
+  .pw-rules li { padding: 6px 0; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+  .pw-rules li::before { content: '✓'; color: var(--accent2); font-weight: 900; }
+
+  /* ACCORDION */
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  details[open] { border-color: rgba(88,166,255,0.3); }
+  summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text-bright);
+    font-size: 0.95rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '▾'; color: var(--accent); transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(180deg); }
+  .details-body { padding: 0 20px 18px; border-top: 1px solid var(--border); margin-top: 0; }
+  .details-body p, .details-body ul { font-size: 0.9rem; margin-top: 12px; }
+  .details-body ul { padding-left: 20px; }
+  .details-body li { margin-bottom: 6px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 20px; }
+  .timeline-item::before { content:''; position:absolute; left:-24px; top:6px; width:10px; height:10px; border-radius:50%; background: var(--accent); border: 2px solid var(--bg); }
+  .timeline-item h4 { font-weight: 800; color: var(--text-bright); margin-bottom: 4px; }
+  .timeline-item p { font-size: 0.88rem; color: var(--text-muted); }
+
+  /* STEPS */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    counter-increment: step;
+    width: 32px; height: 32px;
+    background: rgba(88,166,255,0.15);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-num::before { content: counter(step); }
+  .step-body h4 { font-weight: 800; color: var(--text-bright); margin-bottom: 4px; }
+  .step-body p { font-size: 0.9rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* COLOR VARIANTS FOR SECTION ICONS */
+  .ic-blue   { background: rgba(88,166,255,0.12); }
+  .ic-green  { background: rgba(63,185,80,0.12); }
+  .ic-red    { background: rgba(255,123,114,0.12); }
+  .ic-purple { background: rgba(212,168,255,0.12); }
+  .ic-orange { background: rgba(255,166,87,0.12); }
+
+  /* RESPONSIVE */
+  @media(max-width:600px){
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    nav a { padding: 12px 10px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Modul Belajar Digital</div>
+  <h1>Informatika <span>SMP</span></h1>
+  <p>Materi lengkap sistem bilangan, gerbang logika, jaringan komputer, internet, dan keamanan digital</p>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#konversi">Konversi</a>
+    <a href="#gerbang">Gerbang Logika</a>
+    <a href="#memori">Memori</a>
+    <a href="#jaringan">Jaringan</a>
+    <a href="#internet">Internet</a>
+    <a href="#medsos">Media Sosial</a>
+    <a href="#informasi">Info Kritis</a>
+    <a href="#keamanan">Keamanan</a>
+    <a href="#seluler">Seluler</a>
+    <a href="#routing">Routing</a>
+    <a href="#konfigurasi">Konfigurasi</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ===== 1. KONVERSI BILANGAN ===== -->
+  <section class="section" id="konversi">
+    <div class="section-header">
+      <div class="section-icon ic-blue">🔢</div>
+      <h2>Konversi Sistem Bilangan</h2>
+      <span class="tag">BAB 1</span>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:20px">
+      <div class="card" style="border-color:rgba(88,166,255,0.3)">
+        <div class="gate-name">Biner</div>
+        <p style="font-size:0.85rem">Basis <span class="mono">2</span> — hanya angka <b>0</b> dan <b>1</b>. Digunakan langsung oleh komputer.</p>
+      </div>
+      <div class="card" style="border-color:rgba(63,185,80,0.3)">
+        <div class="gate-name" style="color:var(--accent2)">Oktal</div>
+        <p style="font-size:0.85rem">Basis <span class="mono">8</span> — angka <b>0–7</b>. Singkatan dari biner.</p>
+      </div>
+      <div class="card" style="border-color:rgba(255,166,87,0.3)">
+        <div class="gate-name" style="color:var(--accent5)">Desimal</div>
+        <p style="font-size:0.85rem">Basis <span class="mono">10</span> — angka <b>0–9</b>. Digunakan manusia sehari-hari.</p>
+      </div>
+      <div class="card" style="border-color:rgba(212,168,255,0.3)">
+        <div class="gate-name" style="color:var(--accent4)">Heksadesimal</div>
+        <p style="font-size:0.85rem">Basis <span class="mono">16</span> — angka <b>0–9</b> + huruf <b>A–F</b>.</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">Tabel Perbandingan Nilai</h3>
+    <div class="table-wrap" style="margin-bottom:20px">
+      <table>
+        <thead><tr><th>Desimal</th><th>Biner</th><th>Oktal</th><th>Heksadesimal</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td class="mono" style="color:var(--accent2)">0000</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td class="mono" style="color:var(--accent2)">0001</td><td>1</td><td>1</td></tr>
+          <tr><td>2</td><td class="mono" style="color:var(--accent2)">0010</td><td>2</td><td>2</td></tr>
+          <tr><td>4</td><td class="mono" style="color:var(--accent2)">0100</td><td>4</td><td>4</td></tr>
+          <tr><td>8</td><td class="mono" style="color:var(--accent2)">1000</td><td>10</td><td>8</td></tr>
+          <tr><td>10</td><td class="mono" style="color:var(--accent2)">1010</td><td>12</td><td>A</td></tr>
+          <tr><td>15</td><td class="mono" style="color:var(--accent2)">1111</td><td>17</td><td>F</td></tr>
+          <tr><td>16</td><td class="mono" style="color:var(--accent2)">10000</td><td>20</td><td>10</td></tr>
+          <tr><td>255</td><td class="mono" style="color:var(--accent2)">11111111</td><td>377</td><td>FF</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🔄 Desimal → Biner (Metode Pembagian)</h3>
+        <p style="margin-bottom:10px">Bagi terus dengan 2, catat sisa pembagian dari bawah ke atas.</p>
+        <div class="code-block">
+13 ÷ 2 = 6  sisa <span style="color:var(--accent3)">1</span>
+ 6 ÷ 2 = 3  sisa <span style="color:var(--accent3)">0</span>
+ 3 ÷ 2 = 1  sisa <span style="color:var(--accent3)">1</span>
+ 1 ÷ 2 = 0  sisa <span style="color:var(--accent3)">1</span>
+
+Baca dari bawah: 13₁₀ = <span style="color:var(--accent2)">1101</span>₂</div>
+      </div>
+      <div class="card">
+        <h3>🔄 Biner → Desimal (Nilai Posisi)</h3>
+        <p style="margin-bottom:10px">Kalikan setiap bit dengan 2 pangkat posisinya, lalu jumlahkan.</p>
+        <div class="code-block">
+<span style="color:var(--accent2)">1 0 1 1</span>₂ → Desimal?
+
+1×2³ + 0×2² + 1×2¹ + 1×2⁰
+= 8  + 0  + 2  + 1
+= <span style="color:var(--accent5)">11</span>₁₀</div>
+      </div>
+      <div class="card">
+        <h3>🔄 Desimal → Heksadesimal</h3>
+        <p style="margin-bottom:10px">Bagi dengan 16, gunakan A–F untuk sisa 10–15.</p>
+        <div class="code-block">
+254 ÷ 16 = 15  sisa <span style="color:var(--accent3)">14 (E)</span>
+ 15 ÷ 16 =  0  sisa <span style="color:var(--accent3)">15 (F)</span>
+
+Baca dari bawah: 254₁₀ = <span style="color:var(--accent4)">FE</span>₁₆</div>
+      </div>
+      <div class="card">
+        <h3>🔄 Biner ↔ Heksadesimal</h3>
+        <p style="margin-bottom:10px">Kelompokkan biner per 4 digit, setiap kelompok = 1 hex.</p>
+        <div class="code-block">
+<span style="color:var(--accent2)">1010 1111</span>₂
+
+1010 → <span style="color:var(--accent4)">A</span>
+1111 → <span style="color:var(--accent4)">F</span>
+
+Hasil: <span style="color:var(--accent4)">AF</span>₁₆</div>
+      </div>
+    </div>
+
+    <div class="info-box info-blue" style="margin-top:16px">
+      <strong>💡 Ingat!</strong> Komputer hanya mengenal <strong>0 dan 1</strong> (biner). Semua data — teks, gambar, video — disimpan dalam bentuk biner di dalam memori komputer.
+    </div>
+  </section>
+
+  <!-- ===== 2. GERBANG LOGIKA ===== -->
+  <section class="section" id="gerbang">
+    <div class="section-header">
+      <div class="section-icon ic-purple">⚡</div>
+      <h2>Gerbang Logika</h2>
+      <span class="tag">BAB 2</span>
+    </div>
+
+    <p style="margin-bottom:20px">Gerbang logika adalah <b>komponen dasar sirkuit digital</b> yang melakukan operasi logika pada sinyal biner (0 dan 1). Gerbang inilah yang membentuk prosesor dan semua chip komputer.</p>
+
+    <div class="grid-3" style="margin-bottom:24px">
+
+      <div class="gate-visual">
+        <div class="gate-name">AND</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="20" x2="45" y2="20" stroke="#58a6ff" stroke-width="2"/>
+          <line x1="10" y1="50" x2="45" y2="50" stroke="#58a6ff" stroke-width="2"/>
+          <path d="M45 10 L45 60 Q90 60 90 35 Q90 10 45 10 Z" fill="rgba(88,166,255,0.1)" stroke="#58a6ff" stroke-width="2"/>
+          <line x1="90" y1="35" x2="115" y2="35" stroke="#3fb950" stroke-width="2"/>
+          <text x="60" y="38" fill="#c9d1d9" font-size="11" text-anchor="middle" font-family="monospace">AND</text>
+        </svg>
+        <div class="gate-desc">Output 1 hanya jika SEMUA input bernilai 1</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>B</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+              <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+              <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate-visual">
+        <div class="gate-name" style="color:var(--accent2)">OR</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="20" x2="42" y2="20" stroke="#3fb950" stroke-width="2"/>
+          <line x1="10" y1="50" x2="42" y2="50" stroke="#3fb950" stroke-width="2"/>
+          <path d="M40 10 Q55 10 90 35 Q55 60 40 60 Q55 45 55 35 Q55 25 40 10 Z" fill="rgba(63,185,80,0.1)" stroke="#3fb950" stroke-width="2"/>
+          <line x1="90" y1="35" x2="115" y2="35" stroke="#3fb950" stroke-width="2"/>
+          <text x="62" y="38" fill="#c9d1d9" font-size="11" text-anchor="middle" font-family="monospace">OR</text>
+        </svg>
+        <div class="gate-desc">Output 1 jika SALAH SATU input bernilai 1</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>B</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+              <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate-visual">
+        <div class="gate-name" style="color:var(--accent3)">NOT</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="35" x2="40" y2="35" stroke="#ff7b72" stroke-width="2"/>
+          <path d="M40 15 L85 35 L40 55 Z" fill="rgba(255,123,114,0.1)" stroke="#ff7b72" stroke-width="2"/>
+          <circle cx="90" cy="35" r="5" fill="rgba(255,123,114,0.2)" stroke="#ff7b72" stroke-width="2"/>
+          <line x1="95" y1="35" x2="115" y2="35" stroke="#ff7b72" stroke-width="2"/>
+          <text x="58" y="38" fill="#c9d1d9" font-size="11" text-anchor="middle" font-family="monospace">NOT</text>
+        </svg>
+        <div class="gate-desc">Output adalah KEBALIKAN dari input</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate-visual">
+        <div class="gate-name" style="color:var(--accent5)">NAND</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="20" x2="45" y2="20" stroke="#ffa657" stroke-width="2"/>
+          <line x1="10" y1="50" x2="45" y2="50" stroke="#ffa657" stroke-width="2"/>
+          <path d="M45 10 L45 60 Q88 60 88 35 Q88 10 45 10 Z" fill="rgba(255,166,87,0.1)" stroke="#ffa657" stroke-width="2"/>
+          <circle cx="93" cy="35" r="5" fill="rgba(255,166,87,0.2)" stroke="#ffa657" stroke-width="2"/>
+          <line x1="98" y1="35" x2="115" y2="35" stroke="#ffa657" stroke-width="2"/>
+          <text x="60" y="38" fill="#c9d1d9" font-size="9" text-anchor="middle" font-family="monospace">NAND</text>
+        </svg>
+        <div class="gate-desc">Kebalikan AND — output 0 hanya jika semua input 1</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>B</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate-visual">
+        <div class="gate-name" style="color:var(--accent4)">NOR</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="20" x2="40" y2="20" stroke="#d2a8ff" stroke-width="2"/>
+          <line x1="10" y1="50" x2="40" y2="50" stroke="#d2a8ff" stroke-width="2"/>
+          <path d="M40 10 Q55 10 85 35 Q55 60 40 60 Q55 45 55 35 Q55 25 40 10 Z" fill="rgba(212,168,255,0.1)" stroke="#d2a8ff" stroke-width="2"/>
+          <circle cx="90" cy="35" r="5" fill="rgba(212,168,255,0.2)" stroke="#d2a8ff" stroke-width="2"/>
+          <line x1="95" y1="35" x2="115" y2="35" stroke="#d2a8ff" stroke-width="2"/>
+          <text x="60" y="38" fill="#c9d1d9" font-size="11" text-anchor="middle" font-family="monospace">NOR</text>
+        </svg>
+        <div class="gate-desc">Kebalikan OR — output 1 hanya jika semua input 0</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>B</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+              <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate-visual">
+        <div class="gate-name" style="color:var(--accent2)">XOR</div>
+        <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="20" x2="45" y2="20" stroke="#3fb950" stroke-width="2"/>
+          <line x1="10" y1="50" x2="45" y2="50" stroke="#3fb950" stroke-width="2"/>
+          <path d="M35 10 Q50 10 85 35 Q50 60 35 60 Q50 45 50 35 Q50 25 35 10 Z" fill="rgba(63,185,80,0.1)" stroke="#3fb950" stroke-width="2"/>
+          <path d="M30 12 Q40 25 40 35 Q40 46 30 58" fill="none" stroke="#3fb950" stroke-width="2"/>
+          <line x1="85" y1="35" x2="115" y2="35" stroke="#3fb950" stroke-width="2"/>
+          <text x="60" y="38" fill="#c9d1d9" font-size="11" text-anchor="middle" font-family="monospace">XOR</text>
+        </svg>
+        <div class="gate-desc">Output 1 jika input BERBEDA satu sama lain</div>
+        <div style="margin-top:10px">
+          <table class="truth-table" style="width:100%;font-size:12px">
+            <thead><tr><th>A</th><th>B</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+              <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+              <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info-box info-purple">
+      <strong>🔧 NAND adalah gerbang universal!</strong> Dari kombinasi NAND saja, kita bisa membuat semua gerbang logika lainnya (AND, OR, NOT, XOR). Karena itu hampir semua chip modern berbasis NAND.
+    </div>
+  </section>
+
+  <!-- ===== 3. PENGALAMATAN MEMORI ===== -->
+  <section class="section" id="memori">
+    <div class="section-header">
+      <div class="section-icon ic-green">💾</div>
+      <h2>Pengalamatan Memori</h2>
+      <span class="tag">BAB 3</span>
+    </div>
+
+    <p style="margin-bottom:20px">Setiap lokasi di memori komputer memiliki <b>alamat unik</b>, seperti nomor rumah di sebuah jalan. Alamat ini digunakan CPU untuk membaca atau menulis data.</p>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>📐 Satuan Ukuran Memori</h3>
+        <div class="table-wrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>Satuan</th><th>Singkatan</th><th>Ukuran</th></tr></thead>
+            <tbody>
+              <tr><td>Bit</td><td class="mono">b</td><td>Satuan terkecil (0 atau 1)</td></tr>
+              <tr><td>Byte</td><td class="mono">B</td><td>8 bit</td></tr>
+              <tr><td>Kilobyte</td><td class="mono">KB</td><td>1.024 Byte</td></tr>
+              <tr><td>Megabyte</td><td class="mono">MB</td><td>1.024 KB</td></tr>
+              <tr><td>Gigabyte</td><td class="mono">GB</td><td>1.024 MB</td></tr>
+              <tr><td>Terabyte</td><td class="mono">TB</td><td>1.024 GB</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏠 Cara Kerja Pengalamatan</h3>
+        <p style="margin-bottom:12px">Setiap sel memori memiliki alamat yang dinyatakan dalam bilangan heksadesimal.</p>
+        <div class="code-block">
+Alamat   | Data
+---------|------
+0x0000   | 01001000 (H)
+0x0001   | 01100101 (e)
+0x0002   | 01101100 (l)
+0x0003   | 01101100 (l)
+0x0004   | 01101111 (o)</div>
+        <p style="font-size:0.85rem;margin-top:10px">Contoh: huruf "Hello" tersimpan di 5 alamat memori berurutan.</p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>🔵 RAM (Random Access Memory)</h3>
+        <p>Memori <b>sementara</b> — data hilang saat listrik dimatikan. Digunakan untuk menyimpan program yang sedang berjalan. Makin besar RAM, makin banyak program yang bisa dibuka bersamaan.</p>
+      </div>
+      <div class="card">
+        <h3>🟢 ROM (Read Only Memory)</h3>
+        <p>Memori <b>permanen</b> — data tetap ada meski listrik mati. Berisi instruksi dasar (BIOS/UEFI) yang dijalankan saat komputer pertama kali dinyalakan. Tidak bisa diubah oleh pengguna biasa.</p>
+      </div>
+      <div class="card">
+        <h3>🟡 Cache Memory</h3>
+        <p>Memori <b>super cepat</b> yang ada di dalam CPU. Menyimpan data yang paling sering diakses agar CPU tidak perlu bolak-balik ke RAM. Ukurannya kecil tapi kecepatannya sangat tinggi.</p>
+      </div>
+    </div>
+
+    <div class="info-box info-green" style="margin-top:16px">
+      <strong>📍 IP Address juga adalah pengalamatan!</strong> Konsep pengalamatan tidak hanya di memori — di jaringan internet, setiap perangkat juga punya <strong>alamat IP</strong> yang unik agar data bisa dikirim ke tujuan yang tepat.
+    </div>
+  </section>
+
+  <!-- ===== 4. JARINGAN LOKAL DAN INTERNET ===== -->
+  <section class="section" id="jaringan">
+    <div class="section-header">
+      <div class="section-icon ic-blue">🌐</div>
+      <h2>Jaringan Lokal dan Internet</h2>
+      <span class="tag">BAB 4</span>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="card" style="border-color:rgba(88,166,255,0.3)">
+        <h3>🏠 LAN</h3>
+        <span class="badge badge-blue">Local Area Network</span>
+        <p style="margin-top:10px">Jaringan dalam area kecil — rumah, sekolah, kantor. Contoh: komputer dan printer yang terhubung di ruang kelas.</p>
+      </div>
+      <div class="card" style="border-color:rgba(63,185,80,0.3)">
+        <h3>🏙️ MAN</h3>
+        <span class="badge badge-green">Metropolitan Area Network</span>
+        <p style="margin-top:10px">Jaringan yang mencakup satu kota atau wilayah. Contoh: jaringan antar kampus atau gedung pemerintahan dalam satu kota.</p>
+      </div>
+      <div class="card" style="border-color:rgba(255,166,87,0.3)">
+        <h3>🌍 WAN</h3>
+        <span class="badge badge-orange">Wide Area Network</span>
+        <p style="margin-top:10px">Jaringan yang mencakup area sangat luas — antar kota, antar negara. Internet adalah WAN terbesar di dunia.</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">🔗 Link dan Node dalam Jaringan</h3>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card" style="border-color:rgba(212,168,255,0.3)">
+        <h3>📍 Node</h3>
+        <p>Setiap <b>perangkat</b> yang terhubung dalam jaringan disebut node. Contoh node:</p>
+        <ul style="margin-top:10px;padding-left:20px;font-size:0.9rem">
+          <li>Komputer / laptop</li>
+          <li>Smartphone / tablet</li>
+          <li>Printer jaringan</li>
+          <li>Router dan switch</li>
+          <li>Server</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(88,166,255,0.3)">
+        <h3>📡 Link</h3>
+        <p>Jalur <b>komunikasi</b> yang menghubungkan node-node. Bisa berupa:</p>
+        <ul style="margin-top:10px;padding-left:20px;font-size:0.9rem">
+          <li>Kabel UTP / LAN</li>
+          <li>Kabel fiber optik</li>
+          <li>Sinyal Wi-Fi (nirkabel)</li>
+          <li>Sinyal Bluetooth</li>
+          <li>Koneksi seluler (4G/5G)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">🔀 Topologi Jaringan</h3>
+    <div class="network-diagram">
+      <svg viewBox="0 0 600 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+        <!-- BUS -->
+        <text x="75" y="18" fill="#8b949e" font-size="11" text-anchor="middle" font-family="monospace">BUS</text>
+        <line x1="10" y1="60" x2="150" y2="60" stroke="#58a6ff" stroke-width="2"/>
+        <circle cx="30" cy="60" r="10" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+        <circle cx="75" cy="60" r="10" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+        <circle cx="120" cy="60" r="10" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+        <circle cx="30" cy="38" r="8" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
+        <circle cx="75" cy="38" r="8" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
+        <circle cx="120" cy="38" r="8" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
+        <line x1="30" y1="46" x2="30" y2="50" stroke="#58a6ff" stroke-width="1.5"/>
+        <line x1="75" y1="46" x2="75" y2="50" stroke="#58a6ff" stroke-width="1.5"/>
+        <line x1="120" y1="46" x2="120" y2="50" stroke="#58a6ff" stroke-width="1.5"/>
+        <!-- STAR -->
+        <text x="295" y="18" fill="#8b949e" font-size="11" text-anchor="middle" font-family="monospace">STAR</text>
+        <circle cx="295" cy="75" r="14" fill="#21262d" stroke="#3fb950" stroke-width="2"/>
+        <text x="295" y="79" fill="#3fb950" font-size="9" text-anchor="middle">SW</text>
+        <circle cx="255" cy="42" r="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <circle cx="295" cy="35" r="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <circle cx="335" cy="42" r="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <circle cx="255" cy="108" r="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <circle cx="335" cy="108" r="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="265" y1="49" x2="282" y2="62" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="295" y1="44" x2="295" y2="61" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="325" y1="49" x2="308" y2="62" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="263" y1="100" x2="282" y2="87" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="327" y1="100" x2="308" y2="87" stroke="#3fb950" stroke-width="1.5"/>
+        <!-- RING -->
+        <text x="505" y="18" fill="#8b949e" font-size="11" text-anchor="middle" font-family="monospace">RING</text>
+        <circle cx="505" cy="55" r="38" fill="none" stroke="#d2a8ff" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="505" cy="17" r="9" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <circle cx="543" cy="55" r="9" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <circle cx="527" cy="89" r="9" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <circle cx="483" cy="89" r="9" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <circle cx="467" cy="55" r="9" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <!-- MESH bawah -->
+        <text x="75" y="160" fill="#8b949e" font-size="11" text-anchor="middle" font-family="monospace">MESH</text>
+        <circle cx="40" cy="205" r="10" fill="#161b22" stroke="#ffa657" stroke-width="2"/>
+        <circle cx="75" cy="185" r="10" fill="#161b22" stroke="#ffa657" stroke-width="2"/>
+        <circle cx="110" cy="205" r="10" fill="#161b22" stroke="#ffa657" stroke-width="2"/>
+        <circle cx="110" cy="235" r="10" fill="#161b22" stroke="#ffa657" stroke-width="2"/>
+        <circle cx="40" cy="235" r="10" fill="#161b22" stroke="#ffa657" stroke-width="2"/>
+        <line x1="50" y1="205" x2="65" y2="195" stroke="#ffa657" stroke-width="1.5"/>
+        <line x1="85" y1="195" x2="100" y2="205" stroke="#ffa657" stroke-width="1.5"/>
+        <line x1="110" y1="215" x2="110" y2="225" stroke="#ffa657" stroke-width="1.5"/>
+        <line x1="50" y1="235" x2="100" y2="235" stroke="#ffa657" stroke-width="1.5"/>
+        <line x1="40" y1="215" x2="40" y2="225" stroke="#ffa657" stroke-width="1.5"/>
+        <line x1="48" y1="213" x2="102" y2="227" stroke="#ffa657" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="50" y1="197" x2="100" y2="225" stroke="#ffa657" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- TREE bawah -->
+        <text x="330" y="160" fill="#8b949e" font-size="11" text-anchor="middle" font-family="monospace">TREE</text>
+        <circle cx="330" cy="185" r="10" fill="#21262d" stroke="#ff7b72" stroke-width="2"/>
+        <line x1="310" y1="193" x2="290" y2="208" stroke="#ff7b72" stroke-width="1.5"/>
+        <line x1="350" y1="193" x2="370" y2="208" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="285" cy="215" r="9" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="375" cy="215" r="9" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <line x1="275" y1="222" x2="260" y2="237" stroke="#ff7b72" stroke-width="1.5"/>
+        <line x1="294" y1="223" x2="309" y2="237" stroke="#ff7b72" stroke-width="1.5"/>
+        <line x1="365" y1="223" x2="350" y2="237" stroke="#ff7b72" stroke-width="1.5"/>
+        <line x1="384" y1="223" x2="399" y2="237" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="255" cy="243" r="7" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="315" cy="243" r="7" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="345" cy="243" r="7" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <circle cx="405" cy="243" r="7" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+        <!-- labels bawah -->
+        <text x="75" y="260" fill="#8b949e" font-size="10" text-anchor="middle">Setiap node saling</text>
+        <text x="75" y="272" fill="#8b949e" font-size="10" text-anchor="middle">terhubung langsung</text>
+        <text x="330" y="260" fill="#8b949e" font-size="10" text-anchor="middle">Hierarki seperti</text>
+        <text x="330" y="272" fill="#8b949e" font-size="10" text-anchor="middle">pohon</text>
+      </svg>
+    </div>
+
+    <div class="grid-3" style="margin-top:20px">
+      <details>
+        <summary>Topologi Bus</summary>
+        <div class="details-body">
+          <p>Semua node terhubung ke satu kabel utama (backbone). Jika kabel utama rusak, seluruh jaringan lumpuh. Murah tapi kurang handal untuk jaringan besar.</p>
+          <ul><li>Keuntungan: instalasi mudah dan murah</li><li>Kekurangan: rawan gangguan total</li></ul>
+        </div>
+      </details>
+      <details>
+        <summary>Topologi Star</summary>
+        <div class="details-body">
+          <p>Semua node terhubung ke satu perangkat pusat (switch/hub). Jika satu kabel rusak, hanya node itu yang terganggu. Paling umum digunakan di sekolah dan kantor.</p>
+          <ul><li>Keuntungan: mudah troubleshoot, skalabel</li><li>Kekurangan: tergantung switch pusat</li></ul>
+        </div>
+      </details>
+      <details>
+        <summary>Topologi Ring</summary>
+        <div class="details-body">
+          <p>Data mengalir searah dalam bentuk lingkaran. Setiap node meneruskan data ke node berikutnya. Jika satu node rusak, data bisa terhenti.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Topologi Mesh</summary>
+        <div class="details-body">
+          <p>Setiap node terhubung langsung ke semua node lainnya. Sangat handal — jika satu jalur mati, ada jalur alternatif. Mahal karena butuh banyak kabel.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Topologi Tree</summary>
+        <div class="details-body">
+          <p>Gabungan beberapa topologi star yang dihubungkan secara hierarki. Cocok untuk jaringan besar seperti gedung bertingkat atau kampus.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- KOMUNIKASI DATA -->
+    <h3 style="color:var(--text-bright);margin:28px 0 14px;font-size:1.1rem">📡 Komunikasi Data</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Komponen Komunikasi Data</h3>
+        <div class="steps" style="margin-top:12px">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body"><h4>Pengirim (Sender)</h4><p>Perangkat yang mengirimkan data — komputer, smartphone, sensor.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body"><h4>Media Transmisi</h4><p>Jalur pengiriman data — kabel UTP, fiber optik, atau gelombang radio (Wi-Fi).</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body"><h4>Penerima (Receiver)</h4><p>Perangkat tujuan yang menerima dan memproses data.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body"><h4>Protokol</h4><p>Aturan komunikasi yang disepakati — TCP/IP, HTTP, FTP.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Mode Komunikasi</h3>
+        <div style="margin-top:12px">
+          <div class="info-box info-blue"><strong>Simplex</strong> — Data hanya mengalir satu arah. Contoh: siaran radio, remote TV.</div>
+          <div class="info-box info-green"><strong>Half-Duplex</strong> — Data bisa dua arah tapi bergantian. Contoh: walkie-talkie, radio HT.</div>
+          <div class="info-box info-purple"><strong>Full-Duplex</strong> — Data bisa dua arah bersamaan. Contoh: telepon, video call, internet.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. TERHUBUNG KE INTERNET DENGAN AMAN ===== -->
+  <section class="section" id="internet">
+    <div class="section-header">
+      <div class="section-icon ic-green">🔒</div>
+      <h2>Terhubung ke Internet dengan Aman</h2>
+      <span class="tag">BAB 5</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>✅ Tips Aman di Internet</h3>
+        <ul class="pw-rules">
+          <li>Gunakan password yang kuat dan berbeda di setiap akun</li>
+          <li>Aktifkan verifikasi dua langkah (2FA)</li>
+          <li>Hanya buka website yang menggunakan HTTPS (gembok 🔒)</li>
+          <li>Jangan sambungkan ke Wi-Fi publik tanpa VPN</li>
+          <li>Update perangkat dan aplikasi secara rutin</li>
+          <li>Jangan klik tautan mencurigakan dari email/WA</li>
+          <li>Log out dari akun setelah selesai di komputer umum</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⚠️ Ancaman di Internet</h3>
+        <div style="margin-top:8px">
+          <div class="info-box info-red"><strong>Phishing</strong> — Email/pesan palsu yang mengelabui kamu untuk memberikan data pribadi atau password.</div>
+          <div class="info-box info-red"><strong>Malware</strong> — Program jahat yang bisa mencuri data atau merusak perangkat. Termasuk virus, trojan, spyware.</div>
+          <div class="info-box info-orange"><strong>Hoaks</strong> — Informasi palsu yang sengaja disebarkan untuk menyesatkan.</div>
+          <div class="info-box info-orange"><strong>Penipuan Online</strong> — Tawaran palsu, belanja online palsu, investasi bodong.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ HTTP vs HTTPS</h3>
+      <div class="grid-2" style="margin-top:14px">
+        <div>
+          <span class="badge badge-red">HTTP</span>
+          <p style="margin-top:8px;font-size:0.9rem">Data dikirim tanpa enkripsi. Bisa dibaca siapa saja yang "mendengarkan" jaringan. Jangan masukkan data pribadi di situs HTTP!</p>
+          <div class="code-block" style="margin-top:8px">http://contoh.com/login</div>
+        </div>
+        <div>
+          <span class="badge badge-green">HTTPS</span>
+          <p style="margin-top:8px;font-size:0.9rem">Data dienkripsi menggunakan SSL/TLS. Hanya pengirim dan penerima yang bisa membaca data. Aman untuk transaksi dan login.</p>
+          <div class="code-block" style="margin-top:8px;color:var(--accent2)">https://contoh.com/login 🔒</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. MEDIA SOSIAL ===== -->
+  <section class="section" id="medsos">
+    <div class="section-header">
+      <div class="section-icon ic-purple">📱</div>
+      <h2>Media Sosial</h2>
+      <span class="tag">BAB 6</span>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="card" style="border-color:rgba(88,166,255,0.3)">
+        <h3>✅ Manfaat Positif</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Menghubungkan dengan teman dan keluarga</li>
+          <li>Mendapatkan informasi dan berita terkini</li>
+          <li>Media belajar dan berbagi pengetahuan</li>
+          <li>Membangun portofolio dan karier</li>
+          <li>Platform bisnis dan wirausaha</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,123,114,0.3)">
+        <h3>⚠️ Risiko Negatif</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Kecanduan dan lupa waktu</li>
+          <li>Cyberbullying dan perundungan</li>
+          <li>Penyebaran hoaks dan disinformasi</li>
+          <li>Gangguan privasi dan data bocor</li>
+          <li>FOMO (Fear of Missing Out)</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(63,185,80,0.3)">
+        <h3>🌱 Etika Bersosmed</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Pikirkan sebelum posting</li>
+          <li>Jangan sebarkan informasi belum terverifikasi</li>
+          <li>Hormati privasi orang lain</li>
+          <li>Gunakan bahasa yang sopan</li>
+          <li>Laporkan konten yang melanggar aturan</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box info-purple">
+      <strong>🔐 Jejak Digital</strong> — Semua yang kamu posting di internet meninggalkan <b>jejak digital permanen</b>. Bahkan setelah dihapus, data bisa tersimpan di server atau sudah di-screenshot orang lain. Berpikirlah dua kali sebelum memposting!
+    </div>
+  </section>
+
+  <!-- ===== 7. MENGKAJI KRITIS INFORMASI ===== -->
+  <section class="section" id="informasi">
+    <div class="section-header">
+      <div class="section-icon ic-orange">🔍</div>
+      <h2>Mengkaji Kritis Informasi</h2>
+      <span class="tag">BAB 7</span>
+    </div>
+
+    <p style="margin-bottom:20px">Di era digital, kita dibanjiri informasi setiap saat. Tidak semua informasi itu benar. Kemampuan <b>literasi digital</b> sangat penting untuk memilah mana yang fakta dan mana yang hoaks.</p>
+
+    <div class="card" style="margin-bottom:20px">
+      <h3>🧭 Metode SIFT — Cara Mengecek Informasi</h3>
+      <div class="grid-4" style="margin-top:16px">
+        <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:10px">
+          <div style="font-size:2rem;margin-bottom:8px">⏸️</div>
+          <div style="font-family:'Space Mono',monospace;color:var(--accent);font-weight:700;margin-bottom:6px">STOP</div>
+          <p style="font-size:0.82rem">Berhenti sejenak sebelum menyebarkan. Jangan langsung percaya atau share.</p>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:10px">
+          <div style="font-size:2rem;margin-bottom:8px">🔎</div>
+          <div style="font-family:'Space Mono',monospace;color:var(--accent2);font-weight:700;margin-bottom:6px">INVESTIGATE</div>
+          <p style="font-size:0.82rem">Cari tahu sumber aslinya. Siapa yang menulis? Situs apa ini?</p>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:10px">
+          <div style="font-size:2rem;margin-bottom:8px">🔗</div>
+          <div style="font-family:'Space Mono',monospace;color:var(--accent5);font-weight:700;margin-bottom:6px">FIND COVERAGE</div>
+          <p style="font-size:0.82rem">Cari sumber lain yang memberitakan hal yang sama. Apakah berita itu ada di media terpercaya?</p>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:10px">
+          <div style="font-size:2rem;margin-bottom:8px">📜</div>
+          <div style="font-family:'Space Mono',monospace;color:var(--accent4);font-weight:700;margin-bottom:6px">TRACE CLAIMS</div>
+          <p style="font-size:0.82rem">Lacak klaim ke sumber aslinya. Sering kali informasi sudah diputarbalikkan dari aslinya.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>📰 Ciri-Ciri Hoaks</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Judul sensasional / clickbait berlebihan</li>
+          <li>Tidak ada nama penulis atau sumber jelas</li>
+          <li>URL mencurigakan atau domain aneh</li>
+          <li>Foto/video diambil dari konteks berbeda</li>
+          <li>Menggunakan kata "VIRAL", "SEGERA SHARE"</li>
+          <li>Tanggal tidak ada atau sudah lama</li>
+          <li>Isi bertentangan dengan logika umum</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>✅ Sumber Informasi Terpercaya</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Media berita ber-dewan redaksi dan terverifikasi Dewan Pers</li>
+          <li>Website pemerintah (.go.id, .gov)</li>
+          <li>Lembaga ilmiah dan akademik (.ac.id, .edu)</li>
+          <li>Situs fact-checking: Cek Fakta, TurnBackHoax</li>
+          <li>WHO, Kemenkes untuk info kesehatan</li>
+          <li>BMKG untuk info cuaca dan bencana</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. CYBERBULLYING ===== -->
+  <section class="section" id="keamanan">
+    <div class="section-header">
+      <div class="section-icon ic-red">🚫</div>
+      <h2>Cyberbullying & Keamanan Digital</h2>
+      <span class="tag">BAB 8</span>
+    </div>
+
+    <div class="info-box info-red" style="margin-bottom:20px">
+      <strong>Cyberbullying</strong> adalah perilaku intimidasi, pelecehan, atau perundungan yang dilakukan melalui media digital seperti internet, media sosial, atau pesan teks. Sama berbahayanya dengan perundungan di dunia nyata, bahkan bisa lebih parah karena berlangsung 24 jam dan meninggalkan jejak.
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">Jenis-Jenis Cyberbullying</h3>
+    <div class="grid-2" style="margin-bottom:20px">
+      <details>
+        <summary>😡 Flaming</summary>
+        <div class="details-body"><p>Mengirimkan pesan kasar, penuh amarah, dan kata-kata menyakitkan kepada seseorang secara online. Sering terjadi di kolom komentar atau grup chat.</p></div>
+      </details>
+      <details>
+        <summary>👣 Harassment (Pelecehan)</summary>
+        <div class="details-body"><p>Mengirimkan pesan kasar, menghina, atau mengancam secara berulang-ulang kepada seseorang. Bisa melalui DM, komentar, atau email.</p></div>
+      </details>
+      <details>
+        <summary>🕵️ Cyberstalking</summary>
+        <div class="details-body"><p>Menguntit seseorang secara online — memantau semua aktivitas, lokasi, dan kehidupan korban tanpa izin, seringkali disertai ancaman.</p></div>
+      </details>
+      <details>
+        <summary>📢 Outing (Membocorkan Rahasia)</summary>
+        <div class="details-body"><p>Menyebarkan informasi pribadi, rahasia, atau foto memalukan seseorang tanpa izin ke khalayak umum.</p></div>
+      </details>
+      <details>
+        <summary>🎭 Impersonation (Penyamaran)</summary>
+        <div class="details-body"><p>Berpura-pura menjadi orang lain secara online untuk merusak reputasinya, menipu teman-temannya, atau melakukan hal memalukan atas nama korban.</p></div>
+      </details>
+      <details>
+        <summary>🚷 Exclusion (Pengucilan)</summary>
+        <div class="details-body"><p>Sengaja mengucilkan, tidak mengajak, atau mengeluarkan seseorang dari grup online dengan tujuan menyakiti perasaannya.</p></div>
+      </details>
+      <details>
+        <summary>🎣 Trickery (Penipuan)</summary>
+        <div class="details-body"><p>Menipu seseorang agar mau membocorkan rahasia atau informasi pribadi, lalu menyebarkannya ke orang lain.</p></div>
+      </details>
+      <details>
+        <summary>🌊 Doxing</summary>
+        <div class="details-body"><p>Menyebarkan informasi identitas pribadi seseorang (nama lengkap, alamat, nomor HP, dll.) secara online tanpa izin, biasanya dengan tujuan mempermalukan atau membahayakan.</p></div>
+      </details>
+    </div>
+
+    <div class="grid-3">
+      <div class="card" style="border-color:rgba(255,123,114,0.3)">
+        <h3>🆘 Jika Kamu Korban</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Jangan balas pesan pelaku</li>
+          <li>Simpan bukti (screenshot)</li>
+          <li>Blokir pelaku</li>
+          <li>Ceritakan ke orang tua/guru yang dipercaya</li>
+          <li>Laporkan ke platform media sosial</li>
+          <li>Hubungi hotline Kominfo: 159</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,166,87,0.3)">
+        <h3>👀 Jika Kamu Saksi</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Jangan ikut menyebarkan atau menyukai konten bullying</li>
+          <li>Dukung korban secara pribadi</li>
+          <li>Laporkan konten ke platform</li>
+          <li>Beritahu guru atau orang dewasa</li>
+          <li>Jadilah teman bagi korban</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(63,185,80,0.3)">
+        <h3>🌟 Pencegahan</h3>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:8px">
+          <li>Berpikir sebelum mengirim pesan</li>
+          <li>Jaga privasi akun media sosial</li>
+          <li>Hati-hati berteman dengan orang tidak dikenal</li>
+          <li>Edukasi diri tentang etika digital</li>
+          <li>Diskusikan dengan keluarga</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <h3 style="color:var(--text-bright);margin:32px 0 14px;font-size:1.1rem">🔑 Membuat Kata Sandi yang Kuat</h3>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>✅ Syarat Password Kuat</h3>
+        <ul class="pw-rules">
+          <li>Minimal <b>12 karakter</b> (makin panjang makin baik)</li>
+          <li>Kombinasi huruf <b>BESAR dan kecil</b></li>
+          <li>Mengandung <b>angka</b> (0–9)</li>
+          <li>Mengandung <b>simbol</b> (!@#$%^&*)</li>
+          <li>Tidak menggunakan nama, tanggal lahir, atau kata umum</li>
+          <li>Berbeda untuk setiap akun</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💡 Teknik Membuat Password Mudah Diingat</h3>
+        <p style="margin-bottom:12px;font-size:0.9rem">Gunakan <b>metode passphrase</b> — ambil kata-kata acak dan gabungkan:</p>
+        <div class="code-block">
+Contoh kalimat: "Kucing saya makan nasi 3 kali!"
+
+Password: KuS@y@M@k4nN4s1#3k!
+
+Atau pakai frasa:
+"Aku lahir di Bandung tahun 2009"
+→ Al@dB@ndung#2009!</div>
+        <p style="font-size:0.85rem;margin-top:10px;color:var(--text-muted)">Gunakan <b>password manager</b> untuk menyimpan password dengan aman.</p>
+      </div>
+    </div>
+
+    <div class="grid-4" style="margin-top:16px">
+      <div class="card" style="text-align:center;border-color:rgba(255,123,114,0.4)">
+        <div style="font-size:1.8rem">❌</div>
+        <div class="mono" style="margin:8px 0;font-size:12px;color:var(--accent3)">123456</div>
+        <p style="font-size:0.8rem">Password paling lemah. Jangan pernah gunakan ini.</p>
+      </div>
+      <div class="card" style="text-align:center;border-color:rgba(255,123,114,0.4)">
+        <div style="font-size:1.8rem">❌</div>
+        <div class="mono" style="margin:8px 0;font-size:12px;color:var(--accent3)">namakamu2009</div>
+        <p style="font-size:0.8rem">Mudah ditebak karena menggunakan info pribadi.</p>
+      </div>
+      <div class="card" style="text-align:center;border-color:rgba(63,185,80,0.4)">
+        <div style="font-size:1.8rem">✅</div>
+        <div class="mono" style="margin:8px 0;font-size:12px;color:var(--accent2)">Tr0p1k#Ular9!</div>
+        <p style="font-size:0.8rem">Kuat: campuran huruf, angka, simbol, dan panjang.</p>
+      </div>
+      <div class="card" style="text-align:center;border-color:rgba(63,185,80,0.4)">
+        <div style="font-size:1.8rem">✅</div>
+        <div class="mono" style="margin:8px 0;font-size:12px;color:var(--accent2)">B4nyu@Dingin77!</div>
+        <p style="font-size:0.8rem">Sangat kuat: panjang, variatif, tidak mudah ditebak.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 9. JARINGAN SELULER ===== -->
+  <section class="section" id="seluler">
+    <div class="section-header">
+      <div class="section-icon ic-green">📶</div>
+      <h2>Jaringan Seluler</h2>
+      <span class="tag">BAB 9</span>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">Generasi Jaringan Seluler</h3>
+    <div class="timeline" style="margin-bottom:28px">
+      <div class="timeline-item">
+        <h4>1G — Generasi Pertama (1980-an)</h4>
+        <p>Analog, hanya untuk suara (telepon). Kualitas buruk, mudah disadap, tidak ada enkripsi data.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>2G — GSM/CDMA (1990-an)</h4>
+        <p>Digital, suara lebih jernih + SMS. Kecepatan data sangat lambat (9,6–114 Kbps). Generasi pertama yang bisa mengirim pesan teks.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>3G — UMTS/WCDMA (2000-an)</h4>
+        <p>Internet mobile mulai nyaman. Kecepatan 384 Kbps–7,2 Mbps. Sudah bisa browsing, email, video call standar.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>4G LTE — Long Term Evolution (2010-an)</h4>
+        <p>Era smartphone modern. Kecepatan 50–300 Mbps. Streaming video HD, media sosial, gaming online sudah lancar.</p>
+      </div>
+      <div class="timeline-item" style="margin-bottom:0">
+        <h4>5G — Generasi Kelima (2020-an)</h4>
+        <p>Ultra cepat dan latensi sangat rendah. Kecepatan bisa mencapai 1–10 Gbps. Mendukung IoT, kendaraan otonom, dan smart city.</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">📶 Faktor yang Mempengaruhi Kekuatan Sinyal</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>📍 Jarak dari BTS</h3>
+        <p>Semakin jauh dari menara BTS (Base Transceiver Station), sinyalnya semakin lemah. Sinyal melemah mengikuti hukum kuadrat terbalik.</p>
+      </div>
+      <div class="card">
+        <h3>🏢 Penghalang Fisik</h3>
+        <p>Tembok tebal, gedung beton, pegunungan, dan bangunan tinggi dapat memblokir atau memantulkan sinyal, menyebabkan zona mati (dead zone).</p>
+      </div>
+      <div class="card">
+        <h3>📡 Interferensi</h3>
+        <p>Sinyal dari perangkat lain pada frekuensi yang sama dapat saling mengganggu. Semakin banyak pengguna di satu sel, semakin terbagi bandwidth-nya.</p>
+      </div>
+      <div class="card">
+        <h3>🌦️ Kondisi Cuaca</h3>
+        <p>Hujan deras, badai petir, dan kelembapan tinggi dapat menyerap dan mengganggu gelombang radio, terutama pada frekuensi tinggi (5G mmWave).</p>
+      </div>
+      <div class="card">
+        <h3>📶 Frekuensi yang Digunakan</h3>
+        <p>Frekuensi rendah (700 MHz) jangkauannya luas tapi kecepatan lebih rendah. Frekuensi tinggi (mmWave) sangat cepat tapi jangkauan pendek dan mudah terhalang.</p>
+      </div>
+      <div class="card">
+        <h3>👥 Kepadatan Pengguna</h3>
+        <p>Di tempat ramai seperti konser atau stadion, banyak orang terhubung ke BTS yang sama sehingga koneksi melambat (network congestion).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 10. ROUTING ===== -->
+  <section class="section" id="routing">
+    <div class="section-header">
+      <div class="section-icon ic-orange">🗺️</div>
+      <h2>Routing pada Jaringan Komputer</h2>
+      <span class="tag">BAB 10</span>
+    </div>
+
+    <p style="margin-bottom:20px"><b>Routing</b> adalah proses memilih jalur terbaik untuk mengirimkan paket data dari sumber ke tujuan melalui jaringan. Perangkat yang melakukan routing disebut <b>router</b>.</p>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>🔵 Static Routing</h3>
+        <p style="margin-bottom:10px">Jalur ditentukan secara <b>manual</b> oleh administrator jaringan. Tidak berubah kecuali diubah secara manual.</p>
+        <span class="badge badge-green">Keuntungan</span>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:6px">
+          <li>Stabil dan dapat diprediksi</li>
+          <li>Tidak butuh resource CPU tinggi</li>
+          <li>Cocok untuk jaringan kecil</li>
+        </ul>
+        <span class="badge badge-red" style="margin-top:10px;display:inline-block">Kekurangan</span>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:6px">
+          <li>Tidak fleksibel jika topologi berubah</li>
+          <li>Perlu konfigurasi manual tiap router</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🟢 Dynamic Routing</h3>
+        <p style="margin-bottom:10px">Router secara <b>otomatis</b> mempelajari dan memperbarui tabel routing menggunakan protokol routing.</p>
+        <span class="badge badge-green">Keuntungan</span>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:6px">
+          <li>Otomatis beradaptasi jika ada perubahan</li>
+          <li>Cocok untuk jaringan besar dan kompleks</li>
+        </ul>
+        <span class="badge badge-red" style="margin-top:10px;display:inline-block">Kekurangan</span>
+        <ul style="padding-left:18px;font-size:0.9rem;margin-top:6px">
+          <li>Menggunakan bandwidth untuk update routing</li>
+          <li>Lebih kompleks dikonfigurasi</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px">
+      <h3>📋 Protokol Routing Populer</h3>
+      <div class="table-wrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>Protokol</th><th>Kepanjangan</th><th>Jenis</th><th>Kegunaan</th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="color:var(--accent)">RIP</td><td>Routing Information Protocol</td><td><span class="badge badge-purple">Dynamic</span></td><td>Jaringan kecil, maks 15 hop</td></tr>
+            <tr><td class="mono" style="color:var(--accent)">OSPF</td><td>Open Shortest Path First</td><td><span class="badge badge-purple">Dynamic</span></td><td>Jaringan besar, menghitung jalur terpendek</td></tr>
+            <tr><td class="mono" style="color:var(--accent)">BGP</td><td>Border Gateway Protocol</td><td><span class="badge badge-purple">Dynamic</span></td><td>Antar ISP dan internet global</td></tr>
+            <tr><td class="mono" style="color:var(--accent)">EIGRP</td><td>Enhanced Interior Gateway</td><td><span class="badge badge-purple">Dynamic</span></td><td>Jaringan Cisco, jalur tercepat & efisien</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-box info-orange">
+      <strong>📦 Cara Kerja Paket Data:</strong> Saat kamu membuka YouTube, data dipecah menjadi <b>paket-paket kecil</b>. Setiap paket bisa mengambil jalur berbeda di internet, lalu dirakit kembali di tujuan oleh protokol TCP/IP. Router di setiap persimpangan memutuskan ke mana paket itu harus pergi berdasarkan tabel routing.
+    </div>
+  </section>
+
+  <!-- ===== 11. KONFIGURASI JARINGAN ===== -->
+  <section class="section" id="konfigurasi">
+    <div class="section-header">
+      <div class="section-icon ic-blue">⚙️</div>
+      <h2>Konfigurasi Jaringan Komputer</h2>
+      <span class="tag">BAB 11</span>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">🌐 Konsep IP Address</h3>
+
+    <div class="card" style="margin-bottom:20px">
+      <h3>Struktur IPv4</h3>
+      <p style="margin-bottom:14px">IPv4 terdiri dari 4 oktet, masing-masing 8 bit (0–255), dipisahkan oleh titik.</p>
+      <div class="ip-box">
+        <div><div class="ip-octet">192</div><div class="ip-label">Oktet 1</div></div>
+        <div class="ip-dot">.</div>
+        <div><div class="ip-octet">168</div><div class="ip-label">Oktet 2</div></div>
+        <div class="ip-dot">.</div>
+        <div><div class="ip-octet">1</div><div class="ip-label">Oktet 3</div></div>
+        <div class="ip-dot">.</div>
+        <div><div class="ip-octet">100</div><div class="ip-label">Oktet 4</div></div>
+        <div style="margin-left:16px;align-self:center">
+          <span class="badge badge-purple">IP Private</span>
+          <span class="badge badge-green">Kelas C</span>
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="info-box info-blue">
+          <strong>IP Publik</strong> — Digunakan di internet, unik secara global. Diberikan oleh ISP.
+        </div>
+        <div class="info-box info-green">
+          <strong>IP Privat</strong> — Digunakan di jaringan lokal (LAN). Tidak terlihat dari internet langsung.
+          Rentang: 192.168.x.x / 10.x.x.x / 172.16-31.x.x
+        </div>
+        <div class="info-box info-purple">
+          <strong>IP Dinamis</strong> — Berubah setiap kali koneksi. Diberikan otomatis oleh DHCP server.
+        </div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">⚙️ Perangkat Jaringan</h3>
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>🔀 Router</h3>
+        <p>Menghubungkan dua jaringan berbeda (misal LAN ke internet). Bertugas memilih jalur terbaik untuk paket data. Setiap rumah/kantor punya router untuk akses internet.</p>
+      </div>
+      <div class="card">
+        <h3>🔁 Switch</h3>
+        <p>Menghubungkan perangkat-perangkat dalam satu jaringan lokal (LAN). Lebih cerdas dari hub — mengirim data hanya ke perangkat tujuan, bukan ke semua port.</p>
+      </div>
+      <div class="card">
+        <h3>📡 Access Point (AP)</h3>
+        <p>Memancarkan sinyal Wi-Fi agar perangkat nirkabel bisa terhubung ke jaringan kabel. Biasanya sudah terintegrasi di dalam router Wi-Fi modern.</p>
+      </div>
+      <div class="card">
+        <h3>🖧 NIC (Network Interface Card)</h3>
+        <p>Kartu jaringan yang terpasang di komputer/laptop sebagai antarmuka untuk terhubung ke jaringan. Memiliki alamat fisik unik yang disebut <b>MAC Address</b>.</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">🛠️ Konfigurasi IP di Windows</h3>
+    <div class="code-block" style="margin-bottom:16px">
+<span style="color:var(--text-muted)"># Cara 1: Lihat konfigurasi jaringan saat ini</span>
+ipconfig
+
+<span style="color:var(--text-muted)"># Cara 2: Detail lengkap termasuk MAC Address dan DNS</span>
+ipconfig /all
+
+<span style="color:var(--text-muted)"># Cara 3: Uji koneksi ke perangkat lain (ping)</span>
+ping 192.168.1.1
+ping google.com
+
+<span style="color:var(--text-muted)"># Cara 4: Lacak rute paket data</span>
+tracert google.com</div>
+
+    <h3 style="color:var(--text-bright);margin-bottom:14px;font-size:1rem">📋 Konfigurasi IP Manual (Static)</h3>
+    <div class="card">
+      <div class="grid-2">
+        <div>
+          <p style="margin-bottom:12px;font-size:0.9rem">Untuk mengatur IP statis di Windows: <b>Control Panel → Network → Adapter Properties → TCP/IPv4</b></p>
+          <div class="code-block">
+IP Address  : 192.168.1.10
+Subnet Mask : 255.255.255.0
+Gateway     : 192.168.1.1
+DNS Server  : 8.8.8.8 (Google)
+           atau 1.1.1.1 (Cloudflare)</div>
+        </div>
+        <div>
+          <p style="margin-bottom:12px;font-size:0.9rem">Penjelasan setiap komponen:</p>
+          <div class="info-box info-blue"><strong>IP Address</strong> — Identitas unik perangkat di jaringan lokal.</div>
+          <div class="info-box info-green"><strong>Subnet Mask</strong> — Menentukan batas jaringan. /24 = 255.255.255.0 artinya 254 host tersedia.</div>
+          <div class="info-box info-orange"><strong>Default Gateway</strong> — Alamat router — pintu keluar ke jaringan lain / internet.</div>
+          <div class="info-box info-purple"><strong>DNS Server</strong> — Menerjemahkan nama domain (google.com) menjadi IP address.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-bright);margin:24px 0 14px;font-size:1rem">🔄 Cara Kerja DHCP</h3>
+    <div class="card">
+      <p style="margin-bottom:14px;font-size:0.9rem">DHCP (Dynamic Host Configuration Protocol) otomatis memberikan IP address ke perangkat yang baru bergabung ke jaringan. Prosesnya 4 langkah:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body"><h4>DHCP Discover</h4><p>Perangkat baru menyiarkan pesan ke seluruh jaringan: <i>"Ada DHCP server di sini?"</i></p></div>
+        </div>
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body"><h4>DHCP Offer</h4><p>DHCP server (biasanya router) merespons: <i>"Ada! Saya tawarkan IP 192.168.1.50 untukmu."</i></p></div>
+        </div>
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body"><h4>DHCP Request</h4><p>Perangkat menerima tawaran: <i>"Saya minta IP 192.168.1.50 tersebut."</i></p></div>
+        </div>
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body"><h4>DHCP Acknowledge</h4><p>Server mengkonfirmasi: <i>"Disetujui! IP 192.168.1.50 adalah milikmu selama 24 jam (lease time)."</i></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box info-blue" style="margin-top:16px">
+      <strong>🧩 DNS — Domain Name System:</strong> Saat kamu ketik <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">www.google.com</code> di browser, komputer tidak langsung mengerti. DNS bertugas menerjemahkannya menjadi IP Address yang bisa dipahami komputer, misalnya <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">142.250.185.46</code>. DNS ibarat <b>buku telepon internet</b>.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>📚 Modul Informatika SMP | Dibuat untuk pembelajaran — Kelas 7, 8, dan 9</p>
+  <p style="margin-top:6px">Sistem Bilangan • Gerbang Logika • Jaringan Komputer • Keamanan Digital</p>
+</footer>
+
+<script>
+  // Smooth scroll untuk nav links
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href');
+      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Highlight active nav berdasarkan scroll
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.style.color = '');
+        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (link) { link.style.color = '#f0f6fc'; link.style.borderBottomColor = '#58a6ff'; }
+        else navLinks.forEach(l => l.style.borderBottomColor = 'transparent');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px 0px 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
